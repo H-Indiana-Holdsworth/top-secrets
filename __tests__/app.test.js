@@ -3,6 +3,12 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
+// mock user for tests
+const mockUser = {
+  email: 'indy@m.com',
+  password: 'testpassword',
+};
+
 describe('top-secrets routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -13,10 +19,11 @@ describe('top-secrets routes', () => {
   });
 
   it('signs a user up with POST', async () => {
-    const res = await request(app)
-      .post('/api/v1/auth/signup')
-      .send({ username: 'indy', password: 'testpassword' });
+    const res = await request(app).post('/api/v1/users').send(mockUser);
 
-    expect(res.body).toEqual({ id: expect.any(String), username: 'indy' });
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      ...mockUser,
+    });
   });
 });
