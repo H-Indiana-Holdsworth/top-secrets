@@ -28,4 +28,12 @@ describe('top-secrets routes', () => {
       email,
     });
   });
+
+  it('logs in a user', async () => {
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send(mockUser);
+
+    expect(res.body).toEqual({ message: 'Signed in successfully!', mockUser });
+  });
 });
