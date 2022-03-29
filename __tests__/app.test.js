@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 
 // mock user for tests
 const mockUser = {
@@ -30,10 +31,17 @@ describe('top-secrets routes', () => {
   });
 
   it('logs in a user', async () => {
-    const res = await request(app)
-      .post('/api/v1/users/sessions')
-      .send(mockUser);
+    const user = await UserService.create({
+      email: 'yeet@m.com',
+      password: '12345',
+    });
+    console.log('user', user);
 
-    expect(res.body).toEqual({ message: 'Signed in successfully!', mockUser });
+    const res = await request(app).post('/api/v1/users/sessions').send({
+      email: 'yeet@m.com',
+      password: '12345',
+    });
+
+    expect(res.body).toEqual({ message: 'Signed in successfully!', user });
   });
 });
