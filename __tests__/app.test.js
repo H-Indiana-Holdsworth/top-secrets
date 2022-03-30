@@ -45,6 +45,8 @@ describe('top-secrets routes', () => {
   });
 
   it('logs out a user', async () => {
+    await UserService.create({ email: 'indy@m.com', password: 'testpassword' });
+
     const res = await request(app).delete('/api/v1/users/sessions');
 
     expect(res.body.message).toEqual('Signed out successfully');
