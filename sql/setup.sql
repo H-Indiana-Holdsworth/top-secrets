@@ -13,5 +13,11 @@ CREATE TABLE secrets (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+INSERT INTO
+    secrets (title, description)
+VALUES
+    ('Secret 1', 'My first secret'), 
+    ('Secret 2', 'The second one');

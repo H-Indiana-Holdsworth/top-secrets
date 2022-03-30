@@ -51,4 +51,24 @@ describe('top-secrets routes', () => {
 
     expect(res.body.message).toEqual('Signed out successfully');
   });
+
+  it.only('gets a list of secrets if signed in', async () => {
+    // No user signed in should get an error
+    const agent = request.agent(app);
+    await UserService.create({ email: 'indy@m.com', password: 'testpassword' });
+
+    let res = await agent.get('/api/v1/secrets');
+
+    expect(res.status).toEqual(401);
+
+    // User signed in should get the list of secrets
+
+    await agent
+      .post('/api/v1/auth/sessions')
+      .send({ email: 'indy@m.com', password: 'testpassword' });
+    res = await agent.get('/api/v1/secrets');
+
+    expect(res.body).toEqual([secret1, secret2]);
+    expect(res.status).toEqual(200);
+  });
 });
