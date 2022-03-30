@@ -44,7 +44,7 @@ describe('top-secrets routes', () => {
     expect(res.body).toEqual({ message: 'Signed in successfully!', user });
   });
 
-  it.only('logs out a user', async () => {
+  it('logs out a user', async () => {
     const res = await request(app).delete('/api/v1/users/sessions');
 
     expect(res.body.message).toEqual('Signed out successfully');
