@@ -52,21 +52,25 @@ describe('top-secrets routes', () => {
     expect(res.body.message).toEqual('Signed out successfully');
   });
 
-  it('creates a secret', async () => {
-    const secret = {
-      title: 'Secret 1',
-      description: 'My first secret',
-    };
+  it('creates a secret if user is logged in', async () => {
+    const agent = request.agent(app);
+    await UserService.create({ email: 'indy@m.com', password: 'testpassword' });
 
-    const res = await request(app).post('/api/v1/secrets').send({
-      title: 'Secret 1',
-      description: 'My first secret',
+    const signedIn = await agent
+      .post('/api/v1/auth/sessions')
+      .send({ email: 'indy@m.com', password: 'testpassword' });
+    console.log('signedIn', signedIn.body);
+
+    const res = await agent.post('/api/v1/secrets').send({
+      title: 'Test Secret',
+      description: 'The test secret',
     });
 
     expect(res.body).toEqual({
       id: expect.any(String),
+      title: 'Test Secret',
+      description: 'The test secret',
       createdAt: expect.any(String),
-      ...secret,
     });
   });
 
