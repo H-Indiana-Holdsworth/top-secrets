@@ -52,6 +52,20 @@ describe('top-secrets routes', () => {
     expect(res.body.message).toEqual('Signed out successfully');
   });
 
+  it('creates a secret', async () => {
+    const secret = {
+      title: 'Secret 1',
+      description: 'My first secret',
+    };
+
+    const res = await request(app).post('/api/v1/secrets').send({
+      title: 'Secret 1',
+      description: 'My first secret',
+    });
+
+    expect(res.body).toEqual(secret);
+  });
+
   it('gets a list of secrets if signed in', async () => {
     // No user signed in should get an error
     const agent = request.agent(app);
