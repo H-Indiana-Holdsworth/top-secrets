@@ -56,10 +56,9 @@ describe('top-secrets routes', () => {
     const agent = request.agent(app);
     await UserService.create({ email: 'indy@m.com', password: 'testpassword' });
 
-    const signedIn = await agent
+    await agent
       .post('/api/v1/auth/sessions')
       .send({ email: 'indy@m.com', password: 'testpassword' });
-    console.log('signedIn', signedIn.body);
 
     const res = await agent.post('/api/v1/secrets').send({
       title: 'Test Secret',
