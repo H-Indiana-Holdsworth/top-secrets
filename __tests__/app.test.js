@@ -35,7 +35,6 @@ describe('top-secrets routes', () => {
       email: 'yeet@m.com',
       password: '12345',
     });
-    console.log('user', user);
 
     const res = await request(app).post('/api/v1/users/sessions').send({
       email: 'yeet@m.com',
@@ -43,5 +42,11 @@ describe('top-secrets routes', () => {
     });
 
     expect(res.body).toEqual({ message: 'Signed in successfully!', user });
+  });
+
+  it.only('logs out a user', async () => {
+    const res = await request(app).delete('/api/v1/users/sessions');
+
+    expect(res.body.message).toEqual('Signed out successfully');
   });
 });
