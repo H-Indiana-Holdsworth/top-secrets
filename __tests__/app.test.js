@@ -63,7 +63,11 @@ describe('top-secrets routes', () => {
       description: 'My first secret',
     });
 
-    expect(res.body).toEqual(secret);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      createdAt: expect.any(String),
+      ...secret,
+    });
   });
 
   it('gets a list of secrets if signed in', async () => {
